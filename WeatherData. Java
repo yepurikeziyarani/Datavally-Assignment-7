@@ -1,0 +1,60 @@
+import java.util.*;
+
+class WeatherData {
+    private double temperature;
+    private double humidity;
+
+    public WeatherData(double temperature, double humidity) {
+        this.temperature = temperature;
+        this.humidity = humidity;
+    }
+
+    public double getTemperature() {
+        return temperature;
+    }
+
+    public double getHumidity() {
+        return humidity;
+    }
+}
+
+public class WeatherAnalyzer {
+    public static void main(String[] args) {
+        // Sample list of weather data
+        List<WeatherData> weatherDataList = new ArrayList<>();
+        weatherDataList.add(new WeatherData(-5.0, 60.0));
+        weatherDataList.add(new WeatherData(5.0, 70.0));
+        weatherDataList.add(new WeatherData(15.0, 80.0));
+        weatherDataList.add(new WeatherData(25.0, 75.0));
+        weatherDataList.add(new WeatherData(10.0, 85.0));
+        weatherDataList.add(new WeatherData(20.0, 90.0));
+
+        // Define temperature ranges
+        double[] temperatureRanges = {-10, 0, 10, 20, 30}; // Assuming Celsius scale
+        int numRanges = temperatureRanges.length - 1;
+
+        // Initialize arrays to store counts and total humidity for each range
+        int[] counts = new int[numRanges];
+        double[] totalHumidity = new double[numRanges];
+
+        // Iterate through weather data and update counts and total humidity
+        for (WeatherData weatherData : weatherDataList) {
+            double temperature = weatherData.getTemperature();
+            double humidity = weatherData.getHumidity();
+            for (int i = 0; i < numRanges; i++) {
+                if (temperature >= temperatureRanges[i] && temperature < temperatureRanges[i + 1]) {
+                    counts[i]++;
+                    totalHumidity[i] += humidity;
+                    break;
+                }
+            }
+        }
+
+        // Calculate average humidity for each temperature range and print results
+        for (int i = 0; i < numRanges; i++) {
+            double averageHumidity = counts[i] == 0 ? 0 : totalHumidity[i] / counts[i];
+            System.out.printf("%.0f°C - %.0f°C: %d days, Average humidity: %.2f%%\n",
+                    temperatureRanges[i], temperatureRanges[i + 1], counts[i], averageHumidity);
+        }
+    }
+}
