@@ -1,0 +1,68 @@
+import java.util.*;
+
+class EmployeeWorkHours {
+    private String employeeName;
+    private int[] dailyHours;
+
+    public EmployeeWorkHours(String employeeName, int[] dailyHours) {
+        this.employeeName = employeeName;
+        this.dailyHours = dailyHours;
+    }
+
+    public int[] getDailyHours() {
+        return dailyHours;
+    }
+}
+
+public class WorkHourAnalyzer {
+    public static void main(String[] args) {
+        // Sample list of employee work hours
+        List<EmployeeWorkHours> workHoursList = new ArrayList<>();
+        workHoursList.add(new EmployeeWorkHours("Employee 1", new int[]{8, 8, 8, 8, 8}));
+        workHoursList.add(new EmployeeWorkHours("Employee 2", new int[]{9, 9, 8, 8, 6}));
+        workHoursList.add(new EmployeeWorkHours("Employee 3", new int[]{7, 7, 7, 7, 7}));
+        workHoursList.add(new EmployeeWorkHours("Employee 4", new int[]{10, 10, 10, 10, 0}));
+        workHoursList.add(new EmployeeWorkHours("Employee 5", new int[]{8, 8, 8, 8, 4}));
+        workHoursList.add(new EmployeeWorkHours("Employee 6", new int[]{8, 8, 8, 8, 12}));
+
+        // Initialize counters and total hours for each category
+        int moreThan40Count = 0;
+        double moreThan40TotalHours = 0;
+        int exactly40Count = 0;
+        double exactly40TotalHours = 0;
+        int lessThan40Count = 0;
+        double lessThan40TotalHours = 0;
+
+        // Iterate through work hours and update counters and total hours
+        for (EmployeeWorkHours employeeWorkHours : workHoursList) {
+            int[] dailyHours = employeeWorkHours.getDailyHours();
+            int weeklyTotalHours = 0;
+            for (int hours : dailyHours) {
+                weeklyTotalHours += hours;
+            }
+            double averageDailyHours = (double) weeklyTotalHours / dailyHours.length;
+
+            if (weeklyTotalHours > 40) {
+                moreThan40Count++;
+                moreThan40TotalHours += weeklyTotalHours;
+            } else if (weeklyTotalHours == 40) {
+                exactly40Count++;
+                exactly40TotalHours += weeklyTotalHours;
+            } else {
+                lessThan40Count++;
+                lessThan40TotalHours += weeklyTotalHours;
+            }
+        }
+
+        // Calculate averages for each group
+        double moreThan40Average = moreThan40Count == 0 ? 0 : moreThan40TotalHours / moreThan40Count;
+        double exactly40Average = exactly40Count == 0 ? 0 : exactly40TotalHours / exactly40Count;
+        double lessThan40Average = lessThan40Count == 0 ? 0 : lessThan40TotalHours / lessThan40Count;
+
+        // Print results
+        System.out.println("Employees Work Hours Analysis:");
+        System.out.printf("More than 40 hours: %d employees, Average hours per day: %.2f\n", moreThan40Count, moreThan40Average);
+        System.out.printf("Exactly 40 hours: %d employees, Average hours per day: %.2f\n", exactly40Count, exactly40Average);
+        System.out.printf("Less than 40 hours: %d employees, Average hours per day: %.2f\n", lessThan40Count, lessThan40Average);
+    }
+}
