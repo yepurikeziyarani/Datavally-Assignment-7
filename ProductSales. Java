@@ -1,0 +1,54 @@
+import java.util.*;
+
+class Product {
+    private String name;
+    private double price;
+
+    public Product(String name, double price) {
+        this.name = name;
+        this.price = price;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+}
+
+public class SalesAnalyzer {
+    public static void main(String[] args) {
+        // Sample list of product sales
+        List<Product> sales = new ArrayList<>();
+        sales.add(new Product("Product 1", 25.0));
+        sales.add(new Product("Product 2", 75.0));
+        sales.add(new Product("Product 3", 150.0));
+        sales.add(new Product("Product 4", 50.0));
+        sales.add(new Product("Product 5", 100.0));
+        sales.add(new Product("Product 6", 200.0));
+
+        // Define price ranges
+        double[] priceRanges = {0, 50, 100, 200};
+        int numRanges = priceRanges.length - 1;
+
+        // Initialize arrays to store counts and revenues for each range
+        int[] counts = new int[numRanges];
+        double[] revenues = new double[numRanges];
+
+        // Iterate through sales and update counts and revenues
+        for (Product product : sales) {
+            double price = product.getPrice();
+            for (int i = 0; i < numRanges; i++) {
+                if (price >= priceRanges[i] && price < priceRanges[i + 1]) {
+                    counts[i]++;
+                    revenues[i] += price;
+                    break;
+                }
+            }
+        }
+
+        // Print results
+        for (int i = 0; i < numRanges; i++) {
+            System.out.printf("$%.2f - $%.2f: %d products sold, Total revenue: $%.2f\n",
+                    priceRanges[i], priceRanges[i + 1], counts[i], revenues[i]);
+        }
+    }
+}
