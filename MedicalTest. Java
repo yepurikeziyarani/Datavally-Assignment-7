@@ -1,0 +1,66 @@
+import java.util.*;
+
+class MedicalTestResult {
+    private String patientName;
+    private double resultValue;
+
+    public MedicalTestResult(String patientName, double resultValue) {
+        this.patientName = patientName;
+        this.resultValue = resultValue;
+    }
+
+    public double getResultValue() {
+        return resultValue;
+    }
+}
+
+public class MedicalTestAnalyzer {
+    public static void main(String[] args) {
+        // Sample list of medical test results
+        List<MedicalTestResult> testResults = new ArrayList<>();
+        testResults.add(new MedicalTestResult("Patient 1", 80.0));
+        testResults.add(new MedicalTestResult("Patient 2", 100.0));
+        testResults.add(new MedicalTestResult("Patient 3", 120.0));
+        testResults.add(new MedicalTestResult("Patient 4", 90.0));
+        testResults.add(new MedicalTestResult("Patient 5", 110.0));
+        testResults.add(new MedicalTestResult("Patient 6", 140.0));
+
+        // Define result value ranges
+        double normalRange = 100.0;
+        double borderlineRange = 120.0;
+
+        // Initialize counts and total value for each range
+        int normalCount = 0;
+        double normalTotal = 0.0;
+        int borderlineCount = 0;
+        double borderlineTotal = 0.0;
+        int highCount = 0;
+        double highTotal = 0.0;
+
+        // Iterate through test results and update counts and total values
+        for (MedicalTestResult result : testResults) {
+            double value = result.getResultValue();
+            if (value <= normalRange) {
+                normalCount++;
+                normalTotal += value;
+            } else if (value <= borderlineRange) {
+                borderlineCount++;
+                borderlineTotal += value;
+            } else {
+                highCount++;
+                highTotal += value;
+            }
+        }
+
+        // Calculate averages for each range
+        double normalAverage = normalCount == 0 ? 0 : normalTotal / normalCount;
+        double borderlineAverage = borderlineCount == 0 ? 0 : borderlineTotal / borderlineCount;
+        double highAverage = highCount == 0 ? 0 : highTotal / highCount;
+
+        // Print results
+        System.out.println("Results falling within specific ranges:");
+        System.out.printf("Normal: %d patients, Average value: %.2f\n", normalCount, normalAverage);
+        System.out.printf("Borderline: %d patients, Average value: %.2f\n", borderlineCount, borderlineAverage);
+        System.out.printf("High: %d patients, Average value: %.2f\n", highCount, highAverage);
+    }
+}
