@@ -1,0 +1,60 @@
+import java.util.*;
+
+class House {
+    private double price;
+    private double squareFootage;
+
+    public House(double price, double squareFootage) {
+        this.price = price;
+        this.squareFootage = squareFootage;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public double getSquareFootage() {
+        return squareFootage;
+    }
+}
+
+public class HousingAnalyzer {
+    public static void main(String[] args) {
+        // Sample list of housing prices
+        List<House> houses = new ArrayList<>();
+        houses.add(new House(150000, 1200));
+        houses.add(new House(220000, 1800));
+        houses.add(new House(280000, 2000));
+        houses.add(new House(180000, 1500));
+        houses.add(new House(250000, 2200));
+        houses.add(new House(350000, 2500));
+
+        // Define price ranges
+        double[] priceRanges = {100000, 200000, 300000, 400000}; // Example ranges
+        int numRanges = priceRanges.length - 1;
+
+        // Initialize arrays to store counts and total square footage for each range
+        int[] counts = new int[numRanges];
+        double[] totalSquareFootage = new double[numRanges];
+
+        // Iterate through houses and update counts and total square footage
+        for (House house : houses) {
+            double price = house.getPrice();
+            double squareFootage = house.getSquareFootage();
+            for (int i = 0; i < numRanges; i++) {
+                if (price >= priceRanges[i] && price < priceRanges[i + 1]) {
+                    counts[i]++;
+                    totalSquareFootage[i] += squareFootage;
+                    break;
+                }
+            }
+        }
+
+        // Calculate average square footage for each price range and print results
+        for (int i = 0; i < numRanges; i++) {
+            double averageSquareFootage = counts[i] == 0 ? 0 : totalSquareFootage[i] / counts[i];
+            System.out.printf("$%.0f - $%.0f: %d houses sold, Average square footage: %.2f\n",
+                    priceRanges[i], priceRanges[i + 1], counts[i], averageSquareFootage);
+        }
+    }
+}
